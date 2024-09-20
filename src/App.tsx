@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import { Button } from "react-bootstrap";
 
 function App(): React.JSX.Element {
     return (
@@ -19,6 +20,13 @@ function App(): React.JSX.Element {
                 <li>An unimportant thing</li>
             </ol>
             <p>Kempton was here! Hello World.</p>
+            <Button
+                onClick={() => {
+                    console.log("Hello World!");
+                }}
+            >
+                Log Hello World
+            </Button>
         </div>
     );
 }
