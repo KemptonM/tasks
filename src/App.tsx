@@ -12,6 +12,7 @@ function App(): React.JSX.Element {
                 automatically reload.
             </p>
             <h1>This is a header.</h1>
+            <img src="../public/squirtle.jpg" alt="Squirtle with sunglasses" />
             <p>Kempton was here! Hello World.</p>
         </div>
     );
