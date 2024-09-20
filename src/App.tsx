@@ -13,6 +13,11 @@ function App(): React.JSX.Element {
             </p>
             <h1>This is a header.</h1>
             <img src="../public/squirtle.jpg" alt="Squirtle with sunglasses" />
+            <ol>
+                <li>Most important thing</li>
+                <li>Thing of average importance</li>
+                <li>An unimportant thing</li>
+            </ol>
             <p>Kempton was here! Hello World.</p>
         </div>
     );
