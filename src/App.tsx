@@ -7,6 +7,9 @@ import { Counter } from "./components/Counter";
 import { StartAttempt } from "./components/StartAttempt";
 import { Button } from "react-bootstrap";
 import { CycleHoliday } from "./components/CycleHoliday";
+import { DoubleHalf } from "./bad-components/DoubleHalf";
+import { ColoredBox } from "./bad-components/ColoredBox";
+import { ChooseTeam } from "./bad-components/ChooseTeam";
 
 function App(): React.JSX.Element {
     return (
@@ -36,6 +39,12 @@ function App(): React.JSX.Element {
             ></div>
             <hr />
             <StartAttempt />
+            <hr></hr>
+            <DoubleHalf></DoubleHalf>
+            <hr></hr>
+            <ChooseTeam></ChooseTeam>
+            <hr></hr>
+            <ColoredBox></ColoredBox>
             <hr></hr>
             <Counter></Counter>
             <hr />
