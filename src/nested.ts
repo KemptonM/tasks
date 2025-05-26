@@ -17,10 +17,7 @@ export function getPublishedQuestions(questions: Question[]): Question[] {
  */
 export function getNonEmptyQuestions(questions: Question[]): Question[] {
     return questions.filter(
-        (q) =>
-            q.body !== "" ||
-            q.expected !== "" ||
-            (q.options && q.options.length > 0),
+        (q) => q.body !== "" || q.expected !== "" || q.options.length > 0,
     );
 }
 
@@ -134,14 +131,13 @@ export function editOption(
         let newOptions: string[];
         if (targetOptionIndex === -1) {
             newOptions = [...q.options, newOption];
+        } else if (targetOptionIndex >= q.options.length) {
+            // If replacing at an index that doesn't exist, just add to the end
+            newOptions = [...q.options, newOption];
         } else {
             newOptions = q.options.map((opt, idx) =>
                 idx === targetOptionIndex ? newOption : opt,
             );
-        }
-        // If replacing at an index that doesn't exist, just add to the end
-        if (targetOptionIndex !== -1 && targetOptionIndex >= q.options.length) {
-            newOptions = [...q.options, newOption];
         }
         return { ...q, options: newOptions };
     });
