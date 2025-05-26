@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import { StartAttempt } from "./StartAttempt";
 
 /***
@@ -51,109 +51,129 @@ describe("StartAttempt Component tests", () => {
     });
     test("There is an initially enabled Mulligan button", () => {
         const mulliganButton = screen.getByRole("button", {
-            name: /Mulligan/i
+            name: /Mulligan/i,
         });
         expect(mulliganButton).toBeInTheDocument();
         expect(mulliganButton).toBeEnabled();
     });
-    test("Clicking Mulligan increases attempts", () => {
+    test("Clicking Mulligan increases attempts", async () => {
         const attemptNumber: number =
             extractDigits(screen.getByText(/(\d+)/)) || 0;
         const mulliganButton = screen.getByRole("button", {
-            name: /Mulligan/i
+            name: /Mulligan/i,
         });
-        mulliganButton.click();
+        await act(async () => {
+            mulliganButton.click();
+        });
         const attemptNumberLater = extractDigits(screen.getByText(/(\d+)/));
         expect(attemptNumber + 1).toEqual(attemptNumberLater);
     });
-    test("Clicking Mulligan twice increases attempts by two", () => {
+    test("Clicking Mulligan twice increases attempts by two", async () => {
         const attemptNumber: number =
             extractDigits(screen.getByText(/(\d+)/)) || 0;
         const mulliganButton = screen.getByRole("button", {
-            name: /Mulligan/i
+            name: /Mulligan/i,
         });
-        mulliganButton.click();
-        mulliganButton.click();
+        await act(async () => {
+            mulliganButton.click();
+        });
+        await act(async () => {
+            mulliganButton.click();
+        });
         const attemptNumberLater = extractDigits(screen.getByText(/(\d+)/));
         expect(attemptNumber + 2).toEqual(attemptNumberLater);
     });
-    test("Clicking Start Quiz decreases attempts", () => {
+    test("Clicking Start Quiz decreases attempts", async () => {
         const attemptNumber: number =
             extractDigits(screen.getByText(/(\d+)/)) || 0;
         const startButton = screen.getByRole("button", {
-            name: /Start Quiz/i
+            name: /Start Quiz/i,
         });
-        startButton.click();
+        await act(async () => {
+            startButton.click();
+        });
         const attemptNumberLater =
             extractDigits(screen.getByText(/(\d+)/)) || 0;
         expect(attemptNumber - 1).toEqual(attemptNumberLater);
     });
-    test("Clicking Start Quiz changes enabled buttons", () => {
+    test("Clicking Start Quiz changes enabled buttons", async () => {
         // Given the buttons...
         const startButton = screen.getByRole("button", {
-            name: /Start Quiz/i
+            name: /Start Quiz/i,
         });
         const stopButton = screen.getByRole("button", { name: /Stop Quiz/i });
         const mulliganButton = screen.getByRole("button", {
-            name: /Mulligan/i
+            name: /Mulligan/i,
         });
         // When the start button is clicked
-        startButton.click();
+        await act(async () => {
+            startButton.click();
+        });
         // Then the start is disabled, stop is enabled, and mulligan is disabled
         expect(startButton).toBeDisabled();
         expect(stopButton).toBeEnabled();
         expect(mulliganButton).toBeDisabled();
     });
-    test("Clicking Start and Stop Quiz changes enabled buttons", () => {
+    test("Clicking Start and Stop Quiz changes enabled buttons", async () => {
         // Given the buttons and initial attempt number...
         const startButton = screen.getByRole("button", {
-            name: /Start Quiz/i
+            name: /Start Quiz/i,
         });
         const stopButton = screen.getByRole("button", { name: /Stop Quiz/i });
         const mulliganButton = screen.getByRole("button", {
-            name: /Mulligan/i
+            name: /Mulligan/i,
         });
         // When we click the start button and then the stop button
-        startButton.click();
-        stopButton.click();
+        await act(async () => {
+            startButton.click();
+        });
+        await act(async () => {
+            stopButton.click();
+        });
         // Then the start is enabled, stop is disabled, and mulligan is enabled
         expect(startButton).toBeEnabled();
         expect(stopButton).toBeDisabled();
         expect(mulliganButton).toBeEnabled();
     });
-    test("Clicking Start, Stop, Mulligan sets attempts to original", () => {
+    test("Clicking Start, Stop, Mulligan sets attempts to original", async () => {
         // Given the buttons and initial attempt number...
         const startButton = screen.getByRole("button", {
-            name: /Start Quiz/i
+            name: /Start Quiz/i,
         });
         const stopButton = screen.getByRole("button", { name: /Stop Quiz/i });
         const mulliganButton = screen.getByRole("button", {
-            name: /Mulligan/i
+            name: /Mulligan/i,
         });
         const attemptNumber: number =
             extractDigits(screen.getByText(/(\d+)/)) || 0;
         // When we click the start button and then the stop button
-        startButton.click();
-        stopButton.click();
+        await act(async () => {
+            startButton.click();
+        });
+        await act(async () => {
+            stopButton.click();
+        });
         // Then the attempt is decreased
         const attemptNumberLater: number =
             extractDigits(screen.getByText(/(\d+)/)) || 0;
         expect(attemptNumber - 1).toEqual(attemptNumberLater);
         // And when we click the mulligan button
-        mulliganButton.click();
+        await act(async () => {
+            mulliganButton.click();
+        });
         // Then the attempt is increased back to starting value
         const attemptNumberLatest: number =
             extractDigits(screen.getByText(/(\d+)/)) || 0;
         expect(attemptNumber).toEqual(attemptNumberLatest);
     });
-    test("Cannot click start quiz when out of attempts", () => {
+    test("Cannot click start quiz when out of attempts", async () => {
         // Given the buttons and initial attempt number...
         const startButton = screen.getByRole("button", {
-            name: /Start Quiz/i
+            name: /Start Quiz/i,
         });
         const stopButton = screen.getByRole("button", { name: /Stop Quiz/i });
         const mulliganButton = screen.getByRole("button", {
-            name: /Mulligan/i
+            name: /Mulligan/i,
         });
         let attemptNumber = extractDigits(screen.getByText(/(\d+)/)) || 0;
         const initialAttempt = attemptNumber;
@@ -166,8 +186,12 @@ describe("StartAttempt Component tests", () => {
             expect(stopButton).toBeDisabled();
             expect(mulliganButton).toBeEnabled();
             // And when we Start and then immediately stop the quiz...
-            startButton.click();
-            stopButton.click();
+            await act(async () => {
+                startButton.click();
+            });
+            await act(async () => {
+                stopButton.click();
+            });
             // Then the number is going down, and doesn't go past 0 somehow
             attemptNumber = extractDigits(screen.getByText(/(\d+)/)) || 0;
             expect(attemptNumber).toBeGreaterThanOrEqual(0);
@@ -183,7 +207,9 @@ describe("StartAttempt Component tests", () => {
         expect(stopButton).toBeDisabled();
         expect(mulliganButton).toBeEnabled();
         // And when we click the mulligan button
-        mulliganButton.click();
+        await act(async () => {
+            mulliganButton.click();
+        });
         // Then the attempt is increased back to 1
         const attemptNumberLatest: number =
             extractDigits(screen.getByText(/(\d+)/)) || 0;

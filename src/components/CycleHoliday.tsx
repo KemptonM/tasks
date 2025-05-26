@@ -16,24 +16,33 @@ const alphaOrder = [...holidays].sort((a, b) => a.name.localeCompare(b.name));
 const yearOrder = [...holidays].sort((a, b) => a.year - b.year);
 
 export function CycleHoliday(): React.JSX.Element {
-    const [order, setOrder] = useState<"alpha" | "year">("alpha");
-    const [index, setIndex] = useState<number>(0);
+    const [state, setState] = useState<{
+        order: "alpha" | "year";
+        index: number;
+    }>({
+        order: "alpha",
+        index: 0,
+    });
 
-    const currentList = order === "alpha" ? alphaOrder : yearOrder;
-    const currentHoliday = currentList[index];
+    const currentList = state.order === "alpha" ? alphaOrder : yearOrder;
+    const currentHoliday = currentList[state.index];
 
     function nextAlpha() {
-        // Find the current holiday in alphaOrder
-        const idx = alphaOrder.findIndex((h) => h.name === currentHoliday.name);
-        setOrder("alpha");
-        setIndex((idx + 1) % alphaOrder.length);
+        setState((prev) => ({
+            order: "alpha",
+            index:
+                prev.order === "alpha" ?
+                    (prev.index + 1) % alphaOrder.length
+                :   0,
+        }));
     }
 
     function nextYear() {
-        // Find the current holiday in yearOrder
-        const idx = yearOrder.findIndex((h) => h.name === currentHoliday.name);
-        setOrder("year");
-        setIndex((idx + 1) % yearOrder.length);
+        setState((prev) => ({
+            order: "year",
+            index:
+                prev.order === "year" ? (prev.index + 1) % yearOrder.length : 0,
+        }));
     }
 
     return (

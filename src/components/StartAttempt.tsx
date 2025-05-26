@@ -3,32 +3,49 @@ import { Button } from "react-bootstrap";
 
 export function StartAttempt(): React.JSX.Element {
     const initialAttempts = 4;
-    const [attempts, setAttempts] = useState<number>(initialAttempts);
-    const [inProgress, setInProgress] = useState<boolean>(false);
+    const [state, setState] = useState<{
+        attempts: number;
+        inProgress: boolean;
+    }>({
+        attempts: initialAttempts,
+        inProgress: false,
+    });
 
     function startQuiz() {
-        setAttempts((prev) => prev - 1);
-        setInProgress(true);
+        setState((prev) => ({
+            ...prev,
+            attempts: prev.attempts - 1,
+            inProgress: true,
+        }));
     }
     function stopQuiz() {
-        setInProgress(false);
+        setState((prev) => ({
+            ...prev,
+            inProgress: false,
+        }));
     }
     function mulligan() {
-        if (!inProgress) {
-            setAttempts((prev) => prev + 1);
+        if (!state.inProgress) {
+            setState((prev) => ({
+                ...prev,
+                attempts: prev.attempts === 0 ? 1 : prev.attempts + 1,
+            }));
         }
     }
 
     return (
         <div>
-            <div>Attempts: {attempts}</div>
-            <Button onClick={startQuiz} disabled={inProgress || attempts === 0}>
+            <div>Attempts: {state.attempts}</div>
+            <Button
+                onClick={startQuiz}
+                disabled={state.inProgress || state.attempts === 0}
+            >
                 Start Quiz
             </Button>
-            <Button onClick={stopQuiz} disabled={!inProgress}>
+            <Button onClick={stopQuiz} disabled={!state.inProgress}>
                 Stop Quiz
             </Button>
-            <Button onClick={mulligan} disabled={inProgress}>
+            <Button onClick={mulligan} disabled={state.inProgress}>
                 Mulligan
             </Button>
         </div>
