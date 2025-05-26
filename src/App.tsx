@@ -40,7 +40,7 @@ function App(): React.JSX.Element {
             <hr />
             <StartAttempt />
             <hr></hr>
-            {/* <DoubleHalf></DoubleHalf> */}
+            <DoubleHalf></DoubleHalf>
             <hr></hr>
             <ChooseTeam></ChooseTeam>
             <hr></hr>
