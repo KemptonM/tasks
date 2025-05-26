@@ -10,6 +10,9 @@ import { CycleHoliday } from "./components/CycleHoliday";
 import { DoubleHalf } from "./bad-components/DoubleHalf";
 import { ColoredBox } from "./bad-components/ColoredBox";
 import { ChooseTeam } from "./bad-components/ChooseTeam";
+import { CheckAnswer } from "./form-components/CheckAnswer";
+import { EditMode } from "./form-components/EditMode";
+import { MultipleChoiceQuestion } from "./form-components/MultipleChoiceQuestion";
 
 function App(): React.JSX.Element {
     return (
@@ -20,6 +23,15 @@ function App(): React.JSX.Element {
             >
                 <h1>Welcome to the Quiz App - COS420</h1>
             </header>
+            <hr></hr>
+            <CheckAnswer expectedAnswer="42"></CheckAnswer>
+            <hr></hr>
+            <EditMode></EditMode>
+            <hr></hr>
+            <MultipleChoiceQuestion
+                options={["a", "b", "c"]}
+                expectedAnswer="b"
+            ></MultipleChoiceQuestion>
             <div>Hello World</div>
             <img src="https://via.placeholder.com/100" alt="Placeholder" />
             <ul>
